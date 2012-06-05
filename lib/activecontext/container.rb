@@ -1,12 +1,17 @@
+require "activecontext/context"
+
 module ActiveContext
   class Container
     def initialize
       @names = {}
+      @contexts = {}
     end
 
-    def register(name, ctx={}, &block)
+    def register(name, storage, &block)
       raise "invalid context name" if methods.include?(name)
-      instance_variable_set("@#{name}", ctx)
+      raise "invalid storage" unless storage.respond_to?(:"[]") && storage.respond_to?(:"[]=")
+      
+      @contexts[name] = Context.new(storage)
 
       eigen = class << self; self; end
       eigen.send(:define_method, name) do |*args, &block2|
@@ -49,13 +54,13 @@ module ActiveContext
         Thread.current[:contextualize] = nil
       end unless c
     end
-
+    
     def self.current
       Thread.current[:contextualize]
     end
 
     def context(name)
-      instance_variable_get("@#{name}")
+      @contexts[name]
     end
 
   end

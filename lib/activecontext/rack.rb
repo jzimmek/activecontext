@@ -14,7 +14,7 @@ module ActiveContext
       container = Container.new
 
       container.register :request, {}
-      container.register :session, req.session
+      container.register :session, (req.session[:session] ||= {})
 
       container.instance_exec(req, &@block) if @block
 

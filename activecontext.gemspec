@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'activecontext'
-  s.version = '0.1'
+  s.version = '0.2'
   s.platform = Gem::Platform::RUBY
   s.authors = ['jan zimmek']
   s.email = ['jan.zimmek@web.de']

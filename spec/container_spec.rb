@@ -53,9 +53,8 @@ describe ActiveContext::Container do
   describe "registering a context" do
     it "should create an instance variable with same name as context" do
       c = ActiveContext::Container.new
-      ctx = {}
-      c.register :request, ctx
-      c.context("request").should eq(ctx)
+      c.register :request, {}
+      c.context(:request).should_not be_nil
     end
     
     it "should create a method with same name as context to declare names in this context" do
@@ -92,7 +91,7 @@ describe ActiveContext::Container do
         c = ActiveContext::Container.new
         c.register :request, {}
         c.request :somename, :joe
-        c.context("request")[:somename].should be(:joe)
+        c.context(:request)[:somename].should be(:joe)
       end
 
       it "should take a initial value factory as block" do
@@ -100,7 +99,7 @@ describe ActiveContext::Container do
         c.register :request, {}
         factory = -> { :joe }
         c.request :somename, &factory
-        c.context("request")[:somename].should be(factory)
+        c.context(:request)[:somename].should be(factory)
       end
       
       it "should fail when passing a initial value argument and a block at the same time" do
