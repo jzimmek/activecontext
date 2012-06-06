@@ -26,6 +26,15 @@ describe ActiveContext do
       o.should respond_to(:somename)
     end
     
+    it "should create an aliased method for the injected name" do
+      o = new_test_object
+      o.eigenclass.instance_eval do
+        extend ActiveContext
+        inject :somename => :othername
+      end
+      o.should respond_to(:othername)
+    end
+    
     it "should create multiple methods when passing multiple injected names" do
       o = new_test_object
       o.eigenclass.instance_eval do
@@ -115,6 +124,15 @@ describe ActiveContext do
         outject :somename, :othername
       end
       o.should respond_to(:"somename=")
+      o.should respond_to(:"othername=")
+    end
+  
+    it "should create an aliased method for the outjected name" do
+      o = new_test_object
+      o.eigenclass.instance_eval do
+        extend ActiveContext
+        outject :somename => :othername
+      end
       o.should respond_to(:"othername=")
     end
   

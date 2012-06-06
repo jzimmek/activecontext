@@ -60,6 +60,7 @@ module ActiveContext
     end
 
     def context(name)
+      yield(@contexts[name]) if block_given?
       @contexts[name]
     end
 
